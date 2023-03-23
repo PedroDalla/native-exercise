@@ -1,20 +1,31 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useContext, useState } from 'react';
+import { Home } from './components/Home';
+import { WordCount } from './components/WordCount';
+
+const Stack = createNativeStackNavigator()
 
 export default function App() {
+  const [inputText, setInputText] = useState("")
+
+  const changeTextValue = (text) => {
+    setInputText(text)
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name="Home">
+          {(props) => <Home {...props} changeTextValue={changeTextValue} textValue={inputText} />}
+        </Stack.Screen>
+        <Stack.Screen name="Word Count">
+          {(props) => <WordCount {...props} textValue={inputText} />}
+        </Stack.Screen>
+      </Stack.Navigator>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
